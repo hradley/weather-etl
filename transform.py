@@ -14,10 +14,16 @@ class Transformer:
             self.__loader.save_to_parquet(k, v)
         # reads all saved parquet files
         data_files = self.__loader.read_parquets("weather")
-        # combines all DataFrames into one
+        # combines all DataFrames into one to get the highest temp from all records
         self.__df = pd.concat(data_files, ignore_index=True)
 
     def find_hottest_day(self):
+        """
+        Gets a subset of the combined data containing only the columns we need.
+        Then finds the row that equals to the maximum ScreenTemperature and returns it.
+        :return: a DataFrame row containing the result of the query.
+        """
+
         # creates a subset of the data with only the columns we need
         df_subset = self.__df[['ObservationDate', 'ScreenTemperature', 'Region']]
         # find the row with max temperature
